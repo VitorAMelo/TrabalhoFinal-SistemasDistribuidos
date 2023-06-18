@@ -2,27 +2,27 @@
 <html>
 <head>
     <title>Editar Tarefa</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.7/dist/tailwind.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Editar Tarefa</h1>
-        <form action="{{ url_for('edit', id=task[0]) }}" method="post">
-            <div class="mb-3">
-                <label for="title" class="form-label">Título</label>
-                <input type="text" class="form-control" id="title" name="title" value="{{ task[1] }}" required>
+    <div class="container mx-auto py-8">
+        <h1 class="text-3xl mb-4">Editar Tarefa</h1>
+        <form method="post">
+            <div class="mb-4">
+                <label for="title" class="block mb-2">Título</label>
+                <input type="text" id="title" name="title" class="border border-gray-300 rounded px-4 py-2 w-full" value="{{ task[1] }}" required>
             </div>
-            <div class="mb-3">
-                <label for="description" class="form-label">Descrição</label>
-                <textarea class="form-control" id="description" name="description" rows="5" required>{{ task[2] }}</textarea>
+            <div class="mb-4">
+                <label for="description" class="block mb-2">Descrição</label>
+                <textarea id="description" name="description" class="border border-gray-300 rounded px-4 py-2 w-full" required>{{ task[2] }}</textarea>
             </div>
-            <div class="mb-3">
-                <label for="due_date" class="form-label">Data de Vencimento</label>
-                <input type="date" class="form-control" id="due_date" name="due_date" value="{{ task[3].strftime('%Y-%m-%d') }}" required>
+            <div class="mb-4">
+                <label for="due_date" class="block mb-2">Data de Vencimento</label>
+                <input type="date" id="due_date" name="due_date" class="border border-gray-300 rounded px-4 py-2 w-full" value="{{ task[3] }}" required>
             </div>
-            <button type="submit" class="btn btn-success">Atualizar tarefa</button>
+            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Atualizar Tarefa</button>
         </form>
-        <a href="{{ url_for('index') }}" class="btn btn-info">Voltar para todas as tarefas</a>
+        <a href="{{ url_for('index') }}" class="bg-blue-200 text-blue-800 px-4 py-2 rounded mt-4">Voltar para todas as tarefas</a>
     </div>
 </body>
 </html>
