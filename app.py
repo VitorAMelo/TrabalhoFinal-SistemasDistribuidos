@@ -7,17 +7,17 @@ from flask import Flask, render_template, request, url_for, flash, redirect
 def get_db_connection():
     conn = psycopg2.connect(
         host="localhost",
-        database="tarefas",
+        database="blog",
         user=os.getenv('DB_USERNAME'),
         password=os.environ['DB_PASSWORD']
     )
     return conn
 
 # query todos os posts no banco
-def get_tarefa(tarefa_id):
+def get_post(post_id):
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute('SELECT * FROM tarefas WHERE id = %s', (tarefa_id,))
+    cur.execute('SELECT * FROM posts WHERE id = %s', (post_id,))
     post = cur.fetchone()
     cur.close()
     conn.close()
@@ -32,18 +32,18 @@ app.config['SECRET_KEY'] = os.getenv('SESSION_SECRET_KEY_DEV')
 def index():
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute('SELECT * FROM tarefas')
-    tarefas = cur.fetchall()
+    cur.execute('SELECT * FROM posts')
+    posts = cur.fetchall()
     cur.close()
     conn.close()
-    return render_template('index.html', tarefas=tarefas)
+    return render_template('index.html', posts=posts)
 
-@app.route('/<int:tarefa_id>')
-def tarefa(tarefa_id):
-    tarefa = get_tarefa(tarefa_id)
-    if tarefa is None:
+@app.route('/<int:post_id>')
+def post(post_id):
+    post = get_post(post_id)
+    if post is None:
         return render_template('404.html')
-    return render_template('tarefas.html', tarefa=tarefa)
+    return render_template('post.html', post=post)
 
 @app.route('/about')
 def about():
@@ -60,8 +60,8 @@ def create():
         else:
             conn = get_db_connection()
             cur = conn.cursor()
-            cur.execute('INSERT INTO tarefas (title, content, dia) VALUES (%s, %s, %s)',
-                         (title, content, dia))
+            cur.execute('INSERT INTO posts (title, content) VALUES (%s, %s)',
+                         (title, content))
             conn.commit()
             cur.close()
             conn.close()
@@ -71,9 +71,9 @@ def create():
 
 @app.route('/<int:id>/edit', methods=('GET', 'POST'))
 def edit(id):
-    tarefa = get_tarefa(id)
+    post = get_post(id)
 
-    if tarefa is None:
+    if post is None:
         return render_template('404.html')
 
     if request.method == 'POST':
@@ -85,29 +85,29 @@ def edit(id):
         else:
             conn = get_db_connection()
             cur = conn.cursor()
-            cur.execute('UPDATE tarefas SET title = %s, content = %s, dia = %s'
+            cur.execute('UPDATE posts SET title = %s, content = %s'
                          ' WHERE id = %s',
-                         (title, content, dia, id))
+                         (title, content, id))
             conn.commit()
             cur.close()
             conn.close()
             return redirect(url_for('index'))
 
-    return render_template('edit.html', tarefa=tarefa)
+    return render_template('edit.html', post=post)
 
 @app.route('/<int:id>/delete', methods=('POST',))
 def delete(id):
-    tarefa = get_tarefa(id)
-    if tarefa is None:
+    post = get_post(id)
+    if post is None:
         return render_template('404.html')
     
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute('DELETE FROM tarefas WHERE id = %s', (id,))
+    cur.execute('DELETE FROM posts WHERE id = %s', (id,))
     conn.commit()
     cur.close()
     conn.close()
-    flash('"{}" was successfully deleted!'.format(tarefa[2]))
+    flash('"{}" was successfully deleted!'.format(post[2]))
     return redirect(url_for('index'))
 
 # inicia servico
