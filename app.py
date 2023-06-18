@@ -2,6 +2,7 @@ import os
 import psycopg2
 from flask import Flask, render_template, request, url_for, flash, redirect
 from datetime import datetime
+from datetime import timedelta
 
 # cria a conexao com o BD
 def get_db_connection():
@@ -37,7 +38,7 @@ def index():
     cur.close()
     conn.close()
     current_date = datetime.utcnow()  # Atualize para datetime.datetime.utcnow()
-    return render_template('index.html', tasks=tasks, current_date=current_date)
+    return render_template('index.html', tasks=tasks, current_date=current_date, timedelta=timedelta)
 
 @app.route('/<int:task_id>')
 def task(task_id):
