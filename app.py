@@ -32,18 +32,19 @@ app.config['SECRET_KEY'] = os.getenv('SESSION_SECRET_KEY_DEV')
 def index():
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute('SELECT * FROM tasks')
+    cur.execute('SELECT * FROM tasks ORDER BY due_date ASC')
     tasks = cur.fetchall()
     cur.close()
     conn.close()
-    return render_template('index.html', tasks=tasks, current_date=datetime.now())
+    current_date = datetime.now().date()
+    return render_template('index.html', tasks=tasks, current_date=current_date)
 
 @app.route('/<int:task_id>')
 def task(task_id):
     task = get_task(task_id)
     if task is None:
         return render_template('404.html')
-    return render_template('task.html', task=task, current_date=datetime.now())
+    return render_template('task.html', task=task, current_date=datetime.now().date())
 
 @app.route('/about')
 def about():
@@ -108,9 +109,9 @@ def delete(id):
     conn.commit()
     cur.close()
     conn.close()
-    flash('"{}" was successfully deleted.'.format(task[1]))
+    flash(f'"{task[1]}" was successfully deleted.')
     return redirect(url_for('index'))
 
 # inicia servico
 if __name__ == "__main__":
-	app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000)
