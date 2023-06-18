@@ -26,48 +26,38 @@
             }
         }
 
-        .task-card .due-date {
+        .due-date {
             font-weight: bold;
         }
 
-        .task-card .due-date-late {
+        .due-date-late {
             color: red;
         }
 
-        .task-card .due-date-upcoming {
+        .due-date-upcoming {
             color: orange;
         }
     </style>
 </head>
 <body>
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Lista de Tarefas</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    </head>
-    <body>
-        <div class="container">
-            <h1>Lista de Tarefas</h1>
-            <p>Seja bem-vindo ao gerenciador de tarefas do dia a dia. As tarefas com prazo próximo ou atrasadas serão exibidas primeiro, seguidas das tarefas em ordem de tempo.</p>
-            <a href="{{ url_for('create') }}" class="btn btn-success">Criar uma nova tarefa</a>
-            <div class="task-container">
-                {% for task in tasks %}
-                <div class="task {% if task[3].date() < current_date.date() %}task-late{% elif (task[3] - current_date.date()).days < 7 %}task-upcoming{% endif %}">
-                    <h3>{{ task[1] }}</h3>
-                    <p class="description">{{ task[2] }}</p>
-                    <p class="due-date {% if task[3] < current_date.date() %}due-date-late{% elif task[3] - current_date.date() < timedelta(days=7) %}due-date-upcoming{% endif %}">Data de vencimento: {{ task[3] }}</p>
-                    <a href="{{ url_for('edit', id=task[0]) }}" class="btn btn-orange">Editar</a>
-                    <form action="{{ url_for('delete', id=task[0]) }}" method="post" class="delete-form">
-                        <button type="submit" class="btn btn-red">Excluir</button>
-                    </form>
-                </div>
-                {% endfor %}
+    <div class="container">
+        <h1>Lista de Tarefas</h1>
+        <p>Seja bem-vindo ao gerenciador de tarefas do dia a dia. As tarefas com prazo próximo ou atrasadas serão exibidas primeiro, seguidas das tarefas em ordem de tempo.</p>
+        <a href="{{ url_for('create') }}" class="btn btn-success">Criar uma nova tarefa</a>
+        <div class="task-container">
+            {% for task in tasks %}
+            <div class="task-card">
+                <h3>{{ task[1] }}</h3>
+                <p class="description">{{ task[2] }}</p>
+                <p class="due-date {% if task[3] < current_date.date() %}due-date-late{% elif task[3] - current_date.date() < timedelta(days=7) %}due-date-upcoming{% endif %}">Data de vencimento: {{ task[3] }}</p>
+                <a href="{{ url_for('edit', id=task[0]) }}" class="btn btn-orange">Editar</a>
+                <form action="{{ url_for('delete', id=task[0]) }}" method="post" class="delete-form">
+                    <button type="submit" class="btn btn-red">Excluir</button>
+                </form>
             </div>
+            {% endfor %}
         </div>
-        <script src="{{ url_for('static', filename='script.js') }}"></script>
-    </body>
-    </html>    
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

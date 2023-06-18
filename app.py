@@ -36,7 +36,7 @@ def index():
     tasks = cur.fetchall()
     cur.close()
     conn.close()
-    current_date = datetime.now().date()
+    current_date = datetime.utcnow()  # Atualize para datetime.datetime.utcnow()
     return render_template('index.html', tasks=tasks, current_date=current_date)
 
 @app.route('/<int:task_id>')
