@@ -108,7 +108,8 @@ def delete(id):
     conn.commit()
     cur.close()
     conn.close()
-    flash('"{}" was successfully deleted.)
+    flash('"{}" was successfully deleted.'.format(task[1]))
+    return redirect(url_for('index'))
 
 # inicia servico
 if __name__ == "__main__":
