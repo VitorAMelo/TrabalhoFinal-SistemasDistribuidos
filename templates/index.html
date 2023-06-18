@@ -54,7 +54,7 @@
             <a href="{{ url_for('create') }}" class="btn btn-success">Criar uma nova tarefa</a>
             <div class="task-container">
                 {% for task in tasks %}
-                <div class="task {% if task[3] < current_date.date() %}task-late{% elif task[3] - current_date.date() < timedelta(days=7) %}task-upcoming{% endif %}">
+                <div class="task {% if task[3].date() < current_date.date() %}task-late{% elif (task[3] - current_date.date()).days < 7 %}task-upcoming{% endif %}">
                     <h3>{{ task[1] }}</h3>
                     <p class="description">{{ task[2] }}</p>
                     <p class="due-date {% if task[3] < current_date.date() %}due-date-late{% elif task[3] - current_date.date() < timedelta(days=7) %}due-date-upcoming{% endif %}">Data de vencimento: {{ task[3] }}</p>
