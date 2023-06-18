@@ -41,18 +41,20 @@
 </head>
 <body>
     <div class="container">
-        <h1>Lista de Tarefas</h1>
+        <h1 class="bg-blue-200 text-white py-4 px-8 text-2xl font-bold">Lista de Tarefas</h1>
         <p>Seja bem-vindo ao gerenciador de tarefas do dia a dia. As tarefas com prazo próximo ou atrasadas serão exibidas primeiro, seguidas das tarefas em ordem de tempo.</p>
-        <a href="{{ url_for('create') }}" class="btn btn-success">Criar uma nova tarefa</a>
+        <br>
+        <a href="{{ url_for('create') }}" class="bg-blue-200 text-white px-4 py-2 rounded">Criar uma nova tarefa</a>
+        
         <div class="task-container">
             {% for task in tasks %}
-            <div class="task-card">
-                <h3>{{ task[1] }}</h3>
+            <div class="task-card bg-gradient-to-br from-green-200 to-blue-200 p-4 rounded">
+                <h3 class="text-xl font-bold text-white">{{ task[1] }}</h3>
                 <p class="description">{{ task[2] }}</p>
                 <p class="due-date {% if task[3] < current_date.date() %}due-date-late{% elif task[3] - current_date.date() < timedelta(days=7) %}due-date-upcoming{% endif %}">Data de vencimento: {{ task[3] }}</p>
-                <a href="{{ url_for('edit', id=task[0]) }}" class="btn btn-orange">Editar</a>
+                <a href="{{ url_for('edit', id=task[0]) }}" class="bg-orange-500 text-white px-4 py-2 rounded">Editar</a>
                 <form action="{{ url_for('delete', id=task[0]) }}" method="post" class="delete-form">
-                    <button type="submit" class="btn btn-red">Excluir</button>
+                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded" onclick="return confirm('Tem certeza de que deseja excluir esta tarefa?')">Excluir</button>
                 </form>
             </div>
             {% endfor %}
