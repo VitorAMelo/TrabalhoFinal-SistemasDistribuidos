@@ -108,7 +108,7 @@ def delete(id):
     conn.commit()
     cur.close()
     conn.close()
-    flash('"{}" was successfully deleted.
+    flash('"{}" was successfully deleted.)
 
 # inicia servico
 if __name__ == "__main__":
