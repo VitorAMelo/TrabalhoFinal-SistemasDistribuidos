@@ -1,9 +1,9 @@
 /* cria a tabela */
-DROP TABLE IF EXISTS posts;
+DROP TABLE IF EXISTS tasks;
 
-CREATE TABLE posts (
+CREATE TABLE tasks (
     id SERIAL PRIMARY KEY,
-    title VARCHAR(100) NOT NULL,
+    title VARCHAR(255) NOT NULL,
     description TEXT,
     due_date DATE
 );
