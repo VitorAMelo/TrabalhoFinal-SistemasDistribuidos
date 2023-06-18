@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Task: {{ task[1] }}</title>
+</head>
+<body>
+    <h1>Delete Task: {{ task[1] }}</h1>
+    <p>Are you sure you want to delete this task?</p>
+    <form method="POST" action="{{ url_for('delete', id=task[0]) }}">
+        <input type="submit" value="Yes, Delete">
+    </form>
+    <a href="{{ url_for('index') }}">No, Cancel</a>
+</body>
+</html>

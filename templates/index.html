@@ -1,13 +1,18 @@
-{% extends 'base.html' %}
-
-{% block content %}
-    <h1>{% block title %} Welcome to FlaskBlog {% endblock %}</h1>
-    {% for post in posts %}
-    	<a href="{{ url_for('post', post_id=post[0]) }}"><h2>{{ post[2] }}</h2></a>
-	    <span class="badge badge-primary">{{ post[1] }}</span>
-	    <a href="{{ url_for('edit', id=post[0]) }}">
-            <span class="badge badge-warning">Edit</span>
-        </a>
-	    <hr>
-    {% endfor %}	
-{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task Manager</title>
+</head>
+<body>
+    <h1>Task Manager</h1>
+    <a href="{{ url_for('create') }}">Create New Task</a>
+    <hr>
+    <h2>Tasks</h2>
+    {% for task in tasks %}
+        <h3><a href="{{ url_for('task', task_id=task[0]) }}">{{ task[1] }}</a></h3>
+        <p>{{ task[2] }}</p>
+        <p>Due Date: {{ task[3] }}</p>
+        <hr>
+    {% endfor %}
+</body>
+</html>

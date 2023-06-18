@@ -1,32 +1,22 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<h1>{% block title %} Edit "{{ post[2] }}" {% endblock %}</h1>
-
-<form method="post">
-    <div class="form-group">
-        <label for="title">Title</label>
-        <input type="text" name="title" placeholder="Post title"
-               class="form-control"
-               value="{{ request.form['title'] or post[2] }}">
-        </input>
-    </div>
-
-    <div class="form-group">
-        <label for="content">Content</label>
-        <textarea name="content" placeholder="Post content"
-                  class="form-control">{{ request.form['content'] or post[3] }}</textarea>
-    </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
-</form>
-<hr>
-
-<form action="{{ url_for('delete', id=post[0]) }}" method="POST">
-    <input type="submit" value="Delete Post"
-            class="btn btn-danger btn-sm"
-            onclick="return confirm('Are you sure you want to delete this post?')">
-</form>
-
-{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Task: {{ task[1] }}</title>
+</head>
+<body>
+    <h1>Edit Task: {{ task[1] }}</h1>
+    <form method="POST" action="{{ url_for('edit', id=task[0]) }}">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" value="{{ task[1] }}" required>
+        <br>
+        <label for="description">Description:</label>
+        <textarea id="description" name="description">{{ task[2] }}</textarea>
+        <br>
+        <label for="due_date">Due Date:</label>
+        <input type="date" id="due_date" name="due_date" value="{{ task[3] }}">
+        <br>
+        <input type="submit" value="Update Task">
+    </form>
+    <a href="{{ url_for('index') }}">Back to Tasks</a>
+</body>
+</html>

@@ -1,27 +1,27 @@
 import os
 import psycopg2
 from flask import Flask, render_template, request, url_for, flash, redirect
-
+from datetime import datetime
 
 # cria a conexao com o BD
 def get_db_connection():
     conn = psycopg2.connect(
         host="localhost",
-        database="blog",
+        database="tasks",
         user=os.getenv('DB_USERNAME'),
         password=os.environ['DB_PASSWORD']
     )
     return conn
 
-# query todos os posts no banco
-def get_post(post_id):
+# query todas as tarefas no banco
+def get_task(task_id):
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute('SELECT * FROM posts WHERE id = %s', (post_id,))
-    post = cur.fetchone()
+    cur.execute('SELECT * FROM tasks WHERE id = %s', (task_id,))
+    task = cur.fetchone()
     cur.close()
     conn.close()
-    return post
+    return task
 
 # cria o serviço
 app = Flask(__name__)
@@ -32,18 +32,18 @@ app.config['SECRET_KEY'] = os.getenv('SESSION_SECRET_KEY_DEV')
 def index():
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute('SELECT * FROM posts')
-    posts = cur.fetchall()
+    cur.execute('SELECT * FROM tasks')
+    tasks = cur.fetchall()
     cur.close()
     conn.close()
-    return render_template('index.html', posts=posts)
+    return render_template('index.html', tasks=tasks, current_date=datetime.now())
 
-@app.route('/<int:post_id>')
-def post(post_id):
-    post = get_post(post_id)
-    if post is None:
+@app.route('/<int:task_id>')
+def task(task_id):
+    task = get_task(task_id)
+    if task is None:
         return render_template('404.html')
-    return render_template('post.html', post=post)
+    return render_template('task.html', task=task, current_date=datetime.now())
 
 @app.route('/about')
 def about():
@@ -53,15 +53,16 @@ def about():
 def create():
     if request.method == 'POST':
         title = request.form['title']
-        content = request.form['content']
+        description = request.form['description']
+        due_date = request.form['due_date']
 
         if not title:
             flash('Title is required!')
         else:
             conn = get_db_connection()
             cur = conn.cursor()
-            cur.execute('INSERT INTO posts (title, content) VALUES (%s, %s)',
-                         (title, content))
+            cur.execute('INSERT INTO tasks (title, description, due_date) VALUES (%s, %s, %s)',
+                         (title, description, due_date))
             conn.commit()
             cur.close()
             conn.close()
@@ -71,44 +72,43 @@ def create():
 
 @app.route('/<int:id>/edit', methods=('GET', 'POST'))
 def edit(id):
-    post = get_post(id)
+    task = get_task(id)
 
-    if post is None:
+    if task is None:
         return render_template('404.html')
 
     if request.method == 'POST':
         title = request.form['title']
-        content = request.form['content']
+        description = request.form['description']
+        due_date = request.form['due_date']
 
         if not title:
             flash('Title is required!')
         else:
             conn = get_db_connection()
             cur = conn.cursor()
-            cur.execute('UPDATE posts SET title = %s, content = %s'
-                         ' WHERE id = %s',
-                         (title, content, id))
+            cur.execute('UPDATE tasks SET title = %s, description = %s, due_date = %s WHERE id = %s',
+                         (title, description, due_date, id))
             conn.commit()
             cur.close()
             conn.close()
             return redirect(url_for('index'))
 
-    return render_template('edit.html', post=post)
+    return render_template('edit.html', task=task)
 
 @app.route('/<int:id>/delete', methods=('POST',))
 def delete(id):
-    post = get_post(id)
-    if post is None:
+    task = get_task(id)
+    if task is None:
         return render_template('404.html')
     
     conn = get_db_connection()
     cur = conn.cursor()
-    cur.execute('DELETE FROM posts WHERE id = %s', (id,))
+    cur.execute('DELETE FROM tasks WHERE id = %s', (id,))
     conn.commit()
     cur.close()
     conn.close()
-    flash('"{}" was successfully deleted!'.format(post[2]))
-    return redirect(url_for('index'))
+    flash('"{}" was successfully deleted.
 
 # inicia servico
 if __name__ == "__main__":
