@@ -89,6 +89,8 @@ Assim o gerenciador já está conectado ao postgres, isto é, dois conteineres e
    13. Na lateral, clique sobre o nome do banco criado, e em seguida, no menu, clique em *Tools -> Query Tool*. Isso abre o gerenciador de queries.
    14. Acesse o arquivo *schema_posgres.sql* do projeto. Execute cada comando, *DROP* e *CREATE* juntos (copie, cole e execute), em seguida os comandos *INSERT*. Isso cria a tabela e registros. Você pode conferir fazendo o *SELECT* no banco. Se quiser, confira via conteiner, conforme o **passo 8**.
 
+Antes de executar nossa aplicação, no terminal, execute o comando `pip install psycopg2`, pois ele é um adaptador necessário para essa aplicação para fazer a comunicação entre o python e o postgreSQL
+
 Agora, basta executar nossa aplicação Flask, que já está configurada para acessar o banco. 
 
    15. Execute o arquivo *app.py*
