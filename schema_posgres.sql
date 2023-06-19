@@ -10,6 +10,6 @@ CREATE TABLE tasks (
 
 /* insere dados iniciais */
 INSERT INTO tasks (title, description, due_date) VALUES
-    ('Task 1', 'Description for Task 1', '2023-06-20'),
-    ('Task 2', 'Description for Task 2', '2023-06-22'),
-    ('Task 3', 'Description for Task 3', '2023-06-25');
+    ('Tarefa 1', 'Fazer comida', '2023-06-20'),
+    ('Tarefa 2', 'tomar banho', '2023-06-22'),
+    ('Tarefa 3', 'Fazer trabalho', '2023-06-25');
