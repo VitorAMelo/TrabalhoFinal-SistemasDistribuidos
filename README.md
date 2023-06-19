@@ -1,22 +1,13 @@
-# Flask-Blog-Exercise (version 2)
+# Trabalho Final - Sistemas Distribuidos e Mobile
 
-Esta página apresenta uma simples aplicação Flask, que deve ser conteinerizada, porém, diferentemente, da primeira versão, esta possui o banco de dados (relacional) desacoplado do serviço web. A distribuição da aplicação é apresentada na imagem abaixo.
-
-![Blog-versão 2](./static/arquitetura_blogv2.png)
+Esta página apresenta uma simples aplicação Flask, que deve ser conteinerizada,e esta possui o banco de dados (relacional) desacoplado do serviço web.
 
 ## Organização do projeto
 
 * static: contém arquivos estáticos, por exemplo, arquivos de estilos .css.
 * templates: contém todos os templates usando a engine Jinja. Veja *https://flask.palletsprojects.com/en/2.2.x/templating/* para mais detalhes.
-* app: A aplicação Flask, um micro web framework. Leia mais em *https://flask.palletsprojects.com/en/2.2.x/* arquivo .sql: contém o esquema para criar o banco (Postgres)
+* app: A aplicação Flask, arquivo .sql: contém o esquema para criar o banco (Postgres)
 
-## (1) Clonando um projeto
-
-Certifique que o Git esteja instalado em sua máquina local (virtual) Veja mais em: *https://git-scm.com/book/en/v2/Getting-Started-Installing-Git*. 
-
-* Acessando um repositório:
-
-Para este exercício, você deverá clonar este repositório. Suas credenciais de acesso serão exigidas. Após clonar, explore o projeto para entender sua arquitetura.
 
 **Atenção**, prepare o projeto para compilação/execução. No diretório do projeto:
 
@@ -36,9 +27,11 @@ Para executar a aplicação, temos que colocar o Flask para execução, e config
 
 - Para desativar o ambiente, digite `deactivate`.
 
+Recomendamos fortemente a utilização do github codespaces para essa atividade porque por algum motivo o vscode não reconheceu o flask na maquina de um dos integrantes, e o requirements.txt vai garantir isso
+
 ## (3) Docker
 
-- Instale o docker em sua máquina local (virtual). Siga *https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository*.
+- Instale o docker em sua máquina local (virtual). 
 
 - Os comandos Docker que mais usaremos são:
    - sudo docker image build -t image-name .
@@ -49,6 +42,8 @@ Para executar a aplicação, temos que colocar o Flask para execução, e config
    - sudo docker stop (ou start) image-name (ou image-id)
    - sudo docker rm image-name (ou image-id)
    - sudo docker image rm image-name (ou image-id)
+
+A Partir daqui, se estiver usando o github codespace você pode executar os comandos...
 
 - Para esta prática, iremos construir três imagens: Blog (Flask), Postgres e PgAdmin (gerenciador do banco).
 
@@ -68,7 +63,7 @@ Criamos um conteiner chamado *postgresql*, o colocamos na rede criada, configura
 
 O próximo comando precisa de um e-mail válido, apenas para criar o usuário para o gerenciador do banco.
 
-   6. `docker run --name pgadmin4 --network=postgres-network -p 15432:80 -e "PGADMIN_DEFAULT_EMAIL=email-para-autenticacao" -e "PGADMIN_DEFAULT_PASSWORD=admin123" -d dpage/pgadmin4`
+   6. `docker run --name pgadmin4 --network=postgres-network -p 15432:80 -e "PGADMIN_DEFAULT_EMAIL=teste@gmail.com" -e "PGADMIN_DEFAULT_PASSWORD=admin123" -e PGADMIN_CONFIG_PROXY_X_HOST_COUNT=1 -e PGADMIN_CONFIG_PROXY_X_PREFIX_COUNT=1 -d dpage/pgadmin4`
 
 Criamos um conteiner chamado *pgadmin4*, o colocamos na mesma rede criada do postgres, configuramos a porta local 15432 na máquina local, que será mapeada para a porta 80 do conteiner, já que o acesso é via http, além de configurar a senha *admin123* para o usuário criado, cujo *login* é o email informado.
 
@@ -87,22 +82,18 @@ O acesso ao banco foi concedido, por meio do usuário *postgres*. Acesse o link 
    11. Não há servidor cadastrado. Registre um servidor e informe os seguintes parâmetros de conexão: 
       a. Na aba *General* informar a identificação (*Name*) da conexão.
       b. Na aba *Connection*, informe o *hostname: postgresql*, *Port: 5432*, *Username: postgres* e *Password: admin123*. Marque para deixar a senha salva.
-      
-*Nota*: Em caso de erro no pgAdmin: https://github.com/orgs/community/discussions/17918
 
 Assim o gerenciador já está conectado ao postgres, isto é, dois conteineres estão se comunicando. Agora vamos criar um banco para a aplicação.
 
-   12. No menu clique em *Object -> Create -> Database*. Dê um nome ao banco, por exemplo *blog* com o usuário *postgres* como o dono.
+   12. No menu clique em *Object -> Create -> Database*. Dê um nome ao banco tasks, com o usuário *postgres* como o dono.
    13. Na lateral, clique sobre o nome do banco criado, e em seguida, no menu, clique em *Tools -> Query Tool*. Isso abre o gerenciador de queries.
    14. Acesse o arquivo *schema_posgres.sql* do projeto. Execute cada comando, *DROP* e *CREATE* juntos (copie, cole e execute), em seguida os comandos *INSERT*. Isso cria a tabela e registros. Você pode conferir fazendo o *SELECT* no banco. Se quiser, confira via conteiner, conforme o **passo 8**.
 
-Agora, basta executar nossa aplicação Flask, que já está configurada para acessar o banco. Explore bem o arquivo *app.py* para entender a conexão com o banco. Lembre do arquivo .env que criamos com as variáveis de acesso.
+Agora, basta executar nossa aplicação Flask, que já está configurada para acessar o banco. 
 
    15. Execute o arquivo *app.py*
    16. Acesse o endereço localhost na porta 5000 (localhost:5000) para visualizar a aplicação.
 
-Realize todas as operações CRUD e certifique o resultado no banco, via pgAdmin ou pelo acesso direto ao conteiner via terminal.
+Realize todas as operações CRUD normalmente como um usuário normal!!
 
-Veja como nossa aplicação está desacoplada em três instâncias: banco, gerenciador de banco, e aplicação web. Isso é uma aplicação distribuída. Quer brincar mais um pouco? Crie um conteiner da aplicação web na mesma rede dos outros dois conteineres. Assim você terá sua aplicação distribuída em três conteineres. 
-
-- Pratique e estude bastante. :rocket: rocket:
+Fimmmmmmmm
