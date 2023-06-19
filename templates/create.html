@@ -9,15 +9,15 @@
         <h1 class="text-3xl mb-4">Criar nova tarefa</h1>
         <form method="POST" action="{{ url_for('create') }}">
             <div class="mb-4">
-                <label for="title" class="block mb-2">Title:</label>
+                <label for="title" class="block mb-2">Titulo:</label>
                 <input type="text" id="title" name="title" class="border border-gray-300 rounded px-4 py-2 w-full" required>
             </div>
             <div class="mb-4">
-                <label for="description" class="block mb-2">Description:</label>
+                <label for="description" class="block mb-2">Descrição:</label>
                 <textarea id="description" name="description" class="border border-gray-300 rounded px-4 py-2 w-full"></textarea>
             </div>
             <div class="mb-4">
-                <label for="due_date" class="block mb-2">Due Date:</label>
+                <label for="due_date" class="block mb-2">Data limite:</label>
                 <input type="date" id="due_date" name="due_date" class="border border-gray-300 rounded px-4 py-2 w-full">
             </div>
             <input type="submit" value="Criar tarefa" class="bg-green-500 text-white px-4 py-2 rounded">

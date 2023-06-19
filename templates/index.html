@@ -31,28 +31,44 @@
             color: orange;
         }
     </style>
+    <script>
+        function moveTaskToCompleted(taskId) {
+            const taskCard = document.getElementById(taskId);
+            const completedTasksContainer = document.getElementById("completed-tasks-container");
+            const taskActions = taskCard.querySelector(".task-actions");
+            const completedButton = taskCard.querySelector(".completed-button");
+
+            completedTasksContainer.appendChild(taskCard);
+            taskActions.removeChild(completedButton);
+        }
+    </script>
 </head>
-<body class="bg-gradient-to-br from-purple-900 to-indigo-800">
+<body class="bg-white">
     <div class="container mx-auto px-0">
-        <h1 class="bg-white py-4 px-8 text-2xl font-bold rounded-t-lg">Lista de Tarefas</h1>
+        <h1 class="bg-gradient-to-br from-purple-900 to-indigo-800 text-white py-4 px-8 text-2xl font-bold rounded-tl-lg rounded-tr-lg">Lista de Tarefas</h1>
         <p>Seja bem-vindo ao gerenciador de tarefas do dia a dia. As tarefas com prazo próximo ou atrasadas serão exibidas primeiro, seguidas das tarefas em ordem de tempo.</p>
         <br>
-        <a href="{{ url_for('create') }}" class="bg-blue-200 text-white px-4 py-2 rounded">Criar uma nova tarefa</a>
+        <a href="{{ url_for('create') }}" class="bg-green-500 text-white px-4 py-2 rounded">Criar uma nova tarefa</a>
         <br>
         <div class="task-container mt-8">
             {% for task in tasks %}
-            <div class="task-card bg-gradient-to-br from-green-200 to-blue-200 p-4 rounded mb-4 ml-4 mr-4">
+            <div class="task-card bg-gradient-to-br from-purple-900 to-indigo-800 p-4 rounded mb-4 ml-4 mr-4" id="{{ task[0] }}">
                 <h3 class="text-xl font-bold text-white mb-2">{{ task[1] }}</h3>
                 <p class="description mb-2">{{ task[2] }}</p>
                 <p class="due-date {% if task[3] < current_date.date() %}due-date-late{% elif task[3] - current_date.date() < timedelta(days=7) %}due-date-upcoming{% endif %}">Data de vencimento: {{ task[3] }}</p>
-                <div class="flex justify-end space-x-1">
+                <div class="flex justify-end space-x-1 task-actions">
                     <a href="{{ url_for('edit', id=task[0]) }}" class="bg-yellow-500 text-white px-4 py-2 rounded">Editar</a>
                     <form action="{{ url_for('delete', id=task[0]) }}" method="post" class="delete-form">
                         <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded" onclick="return confirm('Tem certeza de que deseja excluir esta tarefa?')">Excluir</button>
                     </form>
+                    <button class="bg-green-500 text-white px-4 py-2 rounded completed-button" onclick="moveTaskToCompleted('{{ task[0] }}')">Tarefa Concluída</button>
                 </div>
             </div>
             {% endfor %}
+        </div>
+        <h2 class="header">Tarefas Concluídas</h2>
+        <div class="task-container" id="completed-tasks-container">
+            <!-- Tarefas concluídas serão movidas para cá -->
         </div>
     </div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
