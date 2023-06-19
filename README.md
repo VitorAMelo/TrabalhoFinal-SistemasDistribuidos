@@ -2,6 +2,11 @@
 
 Esta página apresenta uma simples aplicação Flask, que deve ser conteinerizada,e esta possui o banco de dados (relacional) desacoplado do serviço web.
 
+O Objetivo dela é você criar suas tarefas, organizar e marcar como concluidas, alem de que se você criou alguma errada você pode excluir sem nenhum problema.
+
+Alunos envolvidos Arthur Marcio Brasil - RA .... e Vitor Alexandrino de Melo - RA 320140534
+
+
 ## Organização do projeto
 
 * static: contém arquivos estáticos, por exemplo, arquivos de estilos .css.
